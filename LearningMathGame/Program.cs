@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Design;
 using System.Threading;
+using System.Threading.Tasks.Sources;
 
 class Program
 {
@@ -12,10 +13,10 @@ class Program
         string seperation = "----------------------------------";
         string welcomeMessage = $"Hello {name}! Today's date is: {date}\n";
         string menuMessage = @"What game would you like to play today? Choose from the options below:
-1 - Addition
-2 - Subtraction
-3 - Multiplication
-4 - Division
+1 - Addition 5 Questions
+2 - Subtraction 5 Questions
+3 - Multiplication 5 Questions
+4 - Division 5 Questions
 5 - Quit The Program";
 
         Menu(seperation, welcomeMessage, menuMessage);
@@ -69,6 +70,8 @@ class Program
         Console.WriteLine(message);
 
         var random = new Random();
+        var score = 0;
+        var totalQuestions = 5;
 
         int firstNumber;
         int secondNumber;
@@ -87,14 +90,28 @@ class Program
                 Console.WriteLine("Correct!");
                 Thread.Sleep(TimeSpan.FromSeconds(1));
                 Console.Clear();
+                score++;
+                totalQuestions--;
+                Console.WriteLine($"Questions remaining: {totalQuestions}");
             }
             else
             {
                 Console.WriteLine("Wrong, Try again!");
                 Thread.Sleep(TimeSpan.FromSeconds(1));
                 Console.Clear();
+                totalQuestions--;
+                Console.WriteLine($"Questions remaining: {totalQuestions}");
+            }
+
+            if (i == 4)
+            {
+                Console.WriteLine($"Game over. Your score is: {score}/5");
+                Console.WriteLine("Press Enter to return to the Main Menu.");
+                Console.ReadLine();
+                Console.Clear();
             }
         }
+
         Main();
     }
 
@@ -104,6 +121,8 @@ class Program
         Console.WriteLine(message);
 
         var random = new Random();
+        var score = 0;
+        var totalQuestions = 5;
 
         int firstNumber;
         int secondNumber;
@@ -122,11 +141,24 @@ class Program
                 Console.WriteLine("Correct!");
                 Thread.Sleep(TimeSpan.FromSeconds(1));
                 Console.Clear();
+                score++;
+                totalQuestions--;
+                Console.WriteLine($"Questions remaining: {totalQuestions}");
             }
             else
             {
                 Console.WriteLine("Wrong, Try again!");
                 Thread.Sleep(TimeSpan.FromSeconds(1));
+                Console.Clear();
+                totalQuestions--;
+                Console.WriteLine($"Questions remaining: {totalQuestions}");
+            }
+
+            if (i == 4)
+            {
+                Console.WriteLine($"Game over. Your score is: {score}/5");
+                Console.WriteLine("Press Enter to return to the Main Menu.");
+                Console.ReadLine();
                 Console.Clear();
             }
         }
@@ -138,7 +170,51 @@ class Program
     {
         Console.Clear();
         Console.WriteLine(message);
+        Console.Clear();
+        Console.WriteLine(message);
 
+        var random = new Random();
+        var score = 0;
+        var totalQuestions = 5;
+
+        int firstNumber;
+        int secondNumber;
+
+        for (int i = 0; i < 5; i++)
+        {
+            firstNumber = random.Next(1, 9);
+            secondNumber = random.Next(1, 9);
+
+            Console.WriteLine($"What is {firstNumber} * {secondNumber}?");
+
+            var userAnswer = Console.ReadLine();
+
+            if (int.Parse(userAnswer) == firstNumber * secondNumber)
+            {
+                Console.WriteLine("Correct!");
+                Thread.Sleep(TimeSpan.FromSeconds(1));
+                Console.Clear();
+                score++;
+                totalQuestions--;
+                Console.WriteLine($"Questions remaining: {totalQuestions}");
+            }
+            else
+            {
+                Console.WriteLine("Wrong, Try again!");
+                Thread.Sleep(TimeSpan.FromSeconds(1));
+                Console.Clear();
+                totalQuestions--;
+                Console.WriteLine($"Questions remaining: {totalQuestions}");
+            }
+
+            if (i == 4)
+            {
+                Console.WriteLine($"Game over. Your score is: {score}/5");
+                Console.WriteLine("Press Enter to return to the Main Menu.");
+                Console.ReadLine();
+                Console.Clear();
+            }
+        }
         Main();
     }
 
@@ -146,7 +222,51 @@ class Program
     {
         Console.Clear();
         Console.WriteLine(message);
+        Console.Clear();
+        Console.WriteLine(message);
 
+        var random = new Random();
+        var score = 0;
+        var totalQuestions = 5;
+
+        int firstNumber;
+        int secondNumber;
+
+        for (int i = 0; i < 5; i++)
+        {
+            firstNumber = random.Next(1, 9);
+            secondNumber = random.Next(1, 9);
+
+            Console.WriteLine($"What is {firstNumber} / {secondNumber}?");
+
+            var userAnswer = Console.ReadLine();
+
+            if (int.Parse(userAnswer) == firstNumber / secondNumber)
+            {
+                Console.WriteLine("Correct!");
+                Thread.Sleep(TimeSpan.FromSeconds(1));
+                Console.Clear();
+                score++;
+                totalQuestions--;
+                Console.WriteLine($"Questions remaining: {totalQuestions}");
+            }
+            else
+            {
+                Console.WriteLine("Wrong, Try again!");
+                Thread.Sleep(TimeSpan.FromSeconds(1));
+                Console.Clear();
+                totalQuestions--;
+                Console.WriteLine($"Questions remaining: {totalQuestions}");
+            }
+
+            if (i == 4)
+            {
+                Console.WriteLine($"Game over. Your score is: {score}/5");
+                Console.WriteLine("Press Enter to return to the Main Menu.");
+                Console.ReadLine();
+                Console.Clear();
+            }
+        }
         Main();
     }
 
