@@ -1,68 +1,72 @@
 ﻿using System;
-using System.ComponentModel.Design;
-using System.Security.AccessControl;
 using System.Threading;
-using System.Threading.Tasks.Sources;
+using System.Collections.Generic;
 
 class Program
 {
-    static void Main()
+    static List<string> games = new List<string>();
+
+    public static void Main()
     {
         string name = GetName();
-        DateTime date = DateTime.Now;
+        bool isRunning = true;
 
-        string seperation = "----------------------------------";
-        string welcomeMessage = $"Hello {name}! Today's date is: {date}\n";
-        string menuMessage = @"What game would you like to play today? Choose from the options below:
-1 - Addition 5 Questions
-2 - Subtraction 5 Questions
-3 - Multiplication 5 Questions
-4 - Division 5 Questions
-5 - Quit The Program";
-
-        Menu(seperation, welcomeMessage, menuMessage);
-
-        string gameChoice = Console.ReadLine()?.ToUpper();
-
-        switch (gameChoice)
+        while (isRunning)
         {
-            case "1":
-                PlayAddition("Addition Selected.");
-                break;
-            case "2":
-                PlaySubtraction("Subtraction Selected.");
-                break;
-            case "3":
-                PlayMultiplication("Multiplication Selected.");
-                break;
-            case "4":
-                PlayDivision("Division Selected.");
-                break;
-            case "5":
-                QuitProgram();
-                break;
-            default:
-                Console.WriteLine("Invalid choice. Please select a valid option.");
-                Console.Clear();
-                Main();
-                break;
-        }
-    }
+            DateTime date = DateTime.Now;
+            string gameChoice = ShowMenu(name, date);
 
-    static void Menu(string seperation, string welcomeMessage, string menuMessage)
-    {
-        Console.Clear();
-        Console.WriteLine(seperation);
-        Console.WriteLine(welcomeMessage);
-        Console.WriteLine(menuMessage);
-        Console.WriteLine(seperation);
+            switch (gameChoice)
+            {
+                case "1":
+                    PlayAddition("Addition Selected.");
+                    break;
+                case "2":
+                    PlaySubtraction("Subtraction Selected.");
+                    break;
+                case "3":
+                    PlayMultiplication("Multiplication Selected.");
+                    break;
+                case "4":
+                    PlayDivision("Division Selected.");
+                    break;
+                case "5":
+                    isRunning = false;
+                    QuitProgram();
+                    break;
+                case "6":
+                    Getgames();
+                    break;
+                default:
+                    Console.WriteLine("Invalid choice. Press any key to try again...");
+                    Console.ReadKey();
+                    break;
+            }
+        }
     }
 
     static string GetName()
     {
         Console.WriteLine("Please type your name.");
-        var name = Console.ReadLine();
-        return name;
+        return Console.ReadLine();
+    }
+
+    static string ShowMenu(string name, DateTime date)
+    {
+        Console.Clear();
+        string separation = "----------------------------------";
+        Console.WriteLine(separation);
+        Console.WriteLine($"Hello {name}! Today's date is: {date}\n");
+        Console.WriteLine(@"What game would you like to play today? Choose from the options below:
+1 - Addition 5 Questions
+2 - Subtraction 5 Questions
+3 - Multiplication 5 Questions
+4 - Division 5 Questions
+5 - Quit The Program
+6 - View Game History");
+        Console.WriteLine(separation);
+
+        return Console.ReadLine()?.Trim();
     }
 
     static void PlayAddition(string message)
@@ -74,46 +78,34 @@ class Program
         var score = 0;
         var totalQuestions = 5;
 
-        int firstNumber;
-        int secondNumber;
-
         for (int i = 0; i < 5; i++)
         {
-            firstNumber = random.Next(1, 9);
-            secondNumber = random.Next(1, 9);
+            int firstNumber = random.Next(1, 9);
+            int secondNumber = random.Next(1, 9);
 
             Console.WriteLine($"What is {firstNumber} + {secondNumber}?");
-
             var userAnswer = Console.ReadLine();
 
-            if (int.Parse(userAnswer) == firstNumber + secondNumber)
+            if (int.TryParse(userAnswer, out int answer) && answer == firstNumber + secondNumber)
             {
-                Console.WriteLine("Correct! Press any key to try again!");
-                Console.ReadKey();
-                Console.Clear();
+                Console.WriteLine("Correct!");
                 score++;
-                totalQuestions--;
-                Console.WriteLine($"Questions remaining: {totalQuestions}");
             }
             else
             {
-                Console.WriteLine("Wrong, Press any key to try again!");
-                Console.ReadKey();
-                Console.Clear();
-                totalQuestions--;
-                Console.WriteLine($"Questions remaining: {totalQuestions}");
+                Console.WriteLine("Wrong!");
             }
 
-            if (i == 4)
-            {
-                Console.WriteLine($"Game over. Your score is: {score}/5");
-                Console.WriteLine("Press Enter to return to the Main Menu.");
-                Console.ReadLine();
-                Console.Clear();
-            }
+            totalQuestions--;
+            Thread.Sleep(1000);
+            Console.Clear();
+            Console.WriteLine($"Questions remaining: {totalQuestions}");
         }
 
-        Main();
+        games.Add($"{DateTime.Now}: Addition - Score: {score}/5");
+        Console.WriteLine($"Game over. Your score is: {score}/5");
+        Console.WriteLine("Press Enter to return to the Main Menu.");
+        Console.ReadLine();
     }
 
     static void PlaySubtraction(string message)
@@ -125,46 +117,33 @@ class Program
         var score = 0;
         var totalQuestions = 5;
 
-        int firstNumber;
-        int secondNumber;
-
         for (int i = 0; i < 5; i++)
         {
-            firstNumber = random.Next(1, 9);
-            secondNumber = random.Next(1, 9);
+            int firstNumber = random.Next(1, 9);
+            int secondNumber = random.Next(1, 9);
 
             Console.WriteLine($"What is {firstNumber} - {secondNumber}?");
-
             var userAnswer = Console.ReadLine();
 
-            if (int.Parse(userAnswer) == firstNumber - secondNumber)
+            if (int.TryParse(userAnswer, out int answer) && answer == firstNumber - secondNumber)
             {
                 Console.WriteLine("Correct!");
-                Thread.Sleep(TimeSpan.FromSeconds(1));
-                Console.Clear();
                 score++;
-                totalQuestions--;
-                Console.WriteLine($"Questions remaining: {totalQuestions}");
             }
             else
             {
-                Console.WriteLine("Wrong, Try again!");
-                Thread.Sleep(TimeSpan.FromSeconds(1));
-                Console.Clear();
-                totalQuestions--;
-                Console.WriteLine($"Questions remaining: {totalQuestions}");
+                Console.WriteLine("Wrong!");
             }
 
-            if (i == 4)
-            {
-                Console.WriteLine($"Game over. Your score is: {score}/5");
-                Console.WriteLine("Press Enter to return to the Main Menu.");
-                Console.ReadLine();
-                Console.Clear();
-            }
+            totalQuestions--;
+            Thread.Sleep(1000);
+            Console.Clear();
+            Console.WriteLine($"Questions remaining: {totalQuestions}");
         }
 
-        Main();
+        Console.WriteLine($"Game over. Your score is: {score}/5");
+        Console.WriteLine("Press Enter to return to the Main Menu.");
+        Console.ReadLine();
     }
 
     static void PlayMultiplication(string message)
@@ -176,45 +155,33 @@ class Program
         var score = 0;
         var totalQuestions = 5;
 
-        int firstNumber;
-        int secondNumber;
-
         for (int i = 0; i < 5; i++)
         {
-            firstNumber = random.Next(1, 9);
-            secondNumber = random.Next(1, 9);
+            int firstNumber = random.Next(1, 9);
+            int secondNumber = random.Next(1, 9);
 
             Console.WriteLine($"What is {firstNumber} * {secondNumber}?");
-
             var userAnswer = Console.ReadLine();
 
-            if (int.Parse(userAnswer) == firstNumber * secondNumber)
+            if (int.TryParse(userAnswer, out int answer) && answer == firstNumber * secondNumber)
             {
                 Console.WriteLine("Correct!");
-                Thread.Sleep(TimeSpan.FromSeconds(1));
-                Console.Clear();
                 score++;
-                totalQuestions--;
-                Console.WriteLine($"Questions remaining: {totalQuestions}");
             }
             else
             {
-                Console.WriteLine("Wrong, Try again!");
-                Thread.Sleep(TimeSpan.FromSeconds(1));
-                Console.Clear();
-                totalQuestions--;
-                Console.WriteLine($"Questions remaining: {totalQuestions}");
+                Console.WriteLine("Wrong!");
             }
 
-            if (i == 4)
-            {
-                Console.WriteLine($"Game over. Your score is: {score}/5");
-                Console.WriteLine("Press Enter to return to the Main Menu.");
-                Console.ReadLine();
-                Console.Clear();
-            }
+            totalQuestions--;
+            Thread.Sleep(1000);
+            Console.Clear();
+            Console.WriteLine($"Questions remaining: {totalQuestions}");
         }
-        Main();
+
+        Console.WriteLine($"Game over. Your score is: {score}/5");
+        Console.WriteLine("Press Enter to return to the Main Menu.");
+        Console.ReadLine();
     }
 
     static void PlayDivision(string message)
@@ -222,50 +189,37 @@ class Program
         Console.Clear();
         Console.WriteLine(message);
 
-        var random = new Random();
         var score = 0;
         var totalQuestions = 5;
-
 
         for (int i = 0; i < 5; i++)
         {
             var divisionNumbers = GetDivisionNumbers();
-            var firstNumber = divisionNumbers[0];
-            var secondNumber = divisionNumbers[1];
+            int firstNumber = divisionNumbers[0];
+            int secondNumber = divisionNumbers[1];
 
             Console.WriteLine($"What is {firstNumber} / {secondNumber}?");
-
             var userAnswer = Console.ReadLine();
 
-            if (int.Parse(userAnswer) == firstNumber / secondNumber)
+            if (int.TryParse(userAnswer, out int answer) && answer == firstNumber / secondNumber)
             {
-                Console.WriteLine("Correct! Press any key to try again!");
-                Console.ReadKey();
-                Thread.Sleep(TimeSpan.FromSeconds(1));
-                Console.Clear();
+                Console.WriteLine("Correct!");
                 score++;
-                totalQuestions--;
-                Console.WriteLine($"Questions remaining: {totalQuestions}");
             }
             else
             {
-                Console.WriteLine("Wrong, Press any key to try again!");
-                Console.ReadKey();
-                Thread.Sleep(TimeSpan.FromSeconds(1));
-                Console.Clear();
-                totalQuestions--;
-                Console.WriteLine($"Questions remaining: {totalQuestions}");
+                Console.WriteLine("Wrong!");
             }
 
-            if (i == 4)
-            {
-                Console.WriteLine($"Game over. Your score is: {score}/5");
-                Console.WriteLine("Press Enter to return to the Main Menu.");
-                Console.ReadLine();
-                Console.Clear();
-            }
+            totalQuestions--;
+            Thread.Sleep(1000);
+            Console.Clear();
+            Console.WriteLine($"Questions remaining: {totalQuestions}");
         }
-        Main();
+
+        Console.WriteLine($"Game over. Your score is: {score}/5");
+        Console.WriteLine("Press Enter to return to the Main Menu.");
+        Console.ReadLine();
     }
 
     static void QuitProgram()
@@ -274,7 +228,6 @@ class Program
         Console.WriteLine("Quitting the program.");
         Environment.Exit(0);
     }
-
 
     static int[] GetDivisionNumbers()
     {
@@ -288,10 +241,25 @@ class Program
             secondNumber = random.Next(1, 9);
         }
 
-        var result = new int[2];
-        result[0] = firstNumber;
-        result[1] = secondNumber;
+        return new int[] { firstNumber, secondNumber };
+    }
 
-        return result;
+    static void Getgames()
+    {
+        Console.Clear();
+        Console.WriteLine("Game History:");
+        if (games.Count == 0)
+        {
+            Console.WriteLine("No games played yet.");
+        }
+        else
+        {
+            foreach (var game in games)
+            {
+                Console.WriteLine(game);
+            }
+        }
+        Console.WriteLine("Press Enter to return to the Main Menu.");
+        Console.ReadLine();
     }
 }
