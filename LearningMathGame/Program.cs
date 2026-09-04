@@ -2,20 +2,15 @@
 
 class Program
 {
-
     public static void Main()
     {
         Helpers helpers = new Helpers();
-
         string name = Helpers.GetName();
-
         Menu menu = new Menu();
-
         GameEngine engine = new GameEngine();
 
-        bool isRunning = true;
-
-        while (isRunning)
+        
+        while (true)
         {
             DateTime date = DateTime.Now;
             string gameChoice = menu.ShowMenu(name, date);
@@ -35,11 +30,10 @@ class Program
                     GameEngine.PlayDivision("Division Selected.");
                     break;
                 case "5":
-                    isRunning = false;
                     GameEngine.QuitProgram();
-                    break;
+                    return; 
                 case "6":
-                    helpers.Getgames();
+                    helpers.GetGames(); 
                     break;
                 default:
                     Console.WriteLine("Invalid choice. Press any key to try again...");

@@ -6,7 +6,8 @@ namespace LearningMathGame
 {
     internal class Helpers
     {
-        internal static List<Game> games = new();
+        // 1. Capitalized class-level list
+        internal static List<Game> Games = new();
 
         internal static string GetName()
         {
@@ -19,17 +20,20 @@ namespace LearningMathGame
             return name;
         }
 
-        internal void Getgames()
+        // 2. Capitalized method name
+        internal void GetGames()
         {
             Console.Clear();
             Console.WriteLine("Game History:");
-            if (games == null || games.Count == 0)
+
+            // 3. Updated references to use the capital 'Games'
+            if (Games == null || Games.Count == 0)
             {
                 Console.WriteLine("No games played yet.");
             }
             else
             {
-                foreach (var game in games)
+                foreach (var game in Games)
                 {
                     Console.WriteLine($"{game.Date} - {game.Type}: {game.Score}");
                 }
@@ -40,13 +44,13 @@ namespace LearningMathGame
 
         public static void AddGame(int gameScore, GameType gameType)
         {
-            games.Add(new Game
+            // 4. Updated reference to use the capital 'Games'
+            Games.Add(new Game
             {
                 Date = DateTime.Now,
                 Score = gameScore,
                 Type = gameType
             });
         }
-
     }
 }
