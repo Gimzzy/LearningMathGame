@@ -9,7 +9,6 @@ class Program
         Menu menu = new Menu();
         GameEngine engine = new GameEngine();
 
-        
         while (true)
         {
             DateTime date = DateTime.Now;
