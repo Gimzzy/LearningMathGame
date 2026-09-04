@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Design;
+using System.Security.AccessControl;
 using System.Threading;
 using System.Threading.Tasks.Sources;
 
@@ -87,8 +88,8 @@ class Program
 
             if (int.Parse(userAnswer) == firstNumber + secondNumber)
             {
-                Console.WriteLine("Correct!");
-                Thread.Sleep(TimeSpan.FromSeconds(1));
+                Console.WriteLine("Correct! Press any key to try again!");
+                Console.ReadKey();
                 Console.Clear();
                 score++;
                 totalQuestions--;
@@ -96,8 +97,8 @@ class Program
             }
             else
             {
-                Console.WriteLine("Wrong, Try again!");
-                Thread.Sleep(TimeSpan.FromSeconds(1));
+                Console.WriteLine("Wrong, Press any key to try again!");
+                Console.ReadKey();
                 Console.Clear();
                 totalQuestions--;
                 Console.WriteLine($"Questions remaining: {totalQuestions}");
@@ -170,8 +171,6 @@ class Program
     {
         Console.Clear();
         Console.WriteLine(message);
-        Console.Clear();
-        Console.WriteLine(message);
 
         var random = new Random();
         var score = 0;
@@ -222,20 +221,17 @@ class Program
     {
         Console.Clear();
         Console.WriteLine(message);
-        Console.Clear();
-        Console.WriteLine(message);
 
         var random = new Random();
         var score = 0;
         var totalQuestions = 5;
 
-        int firstNumber;
-        int secondNumber;
 
         for (int i = 0; i < 5; i++)
         {
-            firstNumber = random.Next(1, 9);
-            secondNumber = random.Next(1, 9);
+            var divisionNumbers = GetDivisionNumbers();
+            var firstNumber = divisionNumbers[0];
+            var secondNumber = divisionNumbers[1];
 
             Console.WriteLine($"What is {firstNumber} / {secondNumber}?");
 
@@ -243,7 +239,8 @@ class Program
 
             if (int.Parse(userAnswer) == firstNumber / secondNumber)
             {
-                Console.WriteLine("Correct!");
+                Console.WriteLine("Correct! Press any key to try again!");
+                Console.ReadKey();
                 Thread.Sleep(TimeSpan.FromSeconds(1));
                 Console.Clear();
                 score++;
@@ -252,7 +249,8 @@ class Program
             }
             else
             {
-                Console.WriteLine("Wrong, Try again!");
+                Console.WriteLine("Wrong, Press any key to try again!");
+                Console.ReadKey();
                 Thread.Sleep(TimeSpan.FromSeconds(1));
                 Console.Clear();
                 totalQuestions--;
@@ -275,5 +273,25 @@ class Program
         Console.Clear();
         Console.WriteLine("Quitting the program.");
         Environment.Exit(0);
+    }
+
+
+    static int[] GetDivisionNumbers()
+    {
+        var random = new Random();
+        var firstNumber = random.Next(1, 9);
+        var secondNumber = random.Next(1, 9);
+
+        while (firstNumber % secondNumber != 0)
+        {
+            firstNumber = random.Next(1, 9);
+            secondNumber = random.Next(1, 9);
+        }
+
+        var result = new int[2];
+        result[0] = firstNumber;
+        result[1] = secondNumber;
+
+        return result;
     }
 }
